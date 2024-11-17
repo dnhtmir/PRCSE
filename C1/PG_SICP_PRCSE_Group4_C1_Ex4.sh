@@ -1,4 +1,12 @@
 #!/bin/bash
+# ============================================================
+# Name: PG_SICP_PRCSE_Group4_C1_Ex4.sh
+# Description: Outputs to the screen 'n' *.csv files in a given directory with the highest line count.
+# Author: Group 4
+# Created On: 2024-11-17
+# Last Modified: 2024-11-17
+# Usage: ./PG_SICP_PRCSE_Group4_C1_Ex4.sh [directory]
+# ============================================================
 
 # check if the correct number of arguments is passed (2 arguments expected)
 if [ $# -ne 2 ];

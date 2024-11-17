@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Make the script executable
-script=./ex4.sh
+script=./PG_SICP_PRCSE_Group4_C1_Ex4.sh
 chmod +x "$script"
 
 # Function to verify the output
