@@ -1,6 +1,10 @@
 # The following website contains weather information for a given location (website).
 # b. Implement a “.py” script that allows a given user to obtain the weather forecast for a
 # given day, using the information from the previously stored “. json” file.
+# c. As an optional exercise, parse the degrees from °F to ºC and windspeed from mph to
+# km/h. Additionally, make the first script (a.) configurable to fetch weather data from
+# other locations. Similarly, adjust the second script (b.) so that users can query for
+# weather data of all the supported locations
 
 import json
 import sys
