@@ -2,6 +2,7 @@
 Script: Steganography Hidden Message Extraction
 Author: Group 4
 Date: 2024-12-04
+Python version: 3.10
 Description:
     This script is designed to uncover a hidden message embedded in the provided PNG file 
     "PRCSE-C2.png" using steganographic techniques. The process involves decoding the image 
@@ -35,8 +36,6 @@ if os.path.exists(image_path):
     # Decrypt the hidden message using the Caesar cipher with ROT13 (shift key = 13)
     decrypted_message = Caesar(key=13).decipher(hidden_message)
     print(f"Decrypted message: {decrypted_message}")  # Display the decrypted message
-
-    #TODO: beautify the message...add spaces...
 
 else:
     print(f"The image '{image_path}' does not exist.")
