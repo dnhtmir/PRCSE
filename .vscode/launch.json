@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Wine Scraper",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ex1.py",
+            "args": [
+                "36"
+            ],
+            "cwd": "${workspaceFolder}/C2/ex1",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Exercise 3",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "ex3.py",
+            "cwd": "${workspaceFolder}/C2/ex3",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
