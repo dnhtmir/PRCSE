@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "ex1.py",
             "args": [
-                "36"
+                "40"
             ],
             "cwd": "${workspaceFolder}/C2/ex1",
             "console": "integratedTerminal",
@@ -19,6 +19,19 @@
             "request": "launch",
             "program": "ex3.py",
             "cwd": "${workspaceFolder}/C2/ex3",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Run Wine Scraper Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "-m",
+            "args": [
+                "unittest",
+                "test_wine_scraper.py"
+            ],
+            "cwd": "${workspaceFolder}/C2/ex1",
             "console": "integratedTerminal",
             "justMyCode": true
         }
