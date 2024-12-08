@@ -12,31 +12,19 @@ def main() -> None:
         sys.exit(1)
         
     product_limit: int = int(sys.argv[1]) if len(sys.argv) == 2 else 50
-    continente_scraper: ContinenteWineScraper = ContinenteWineScraper(os.path.join(os.getcwd(), 'generated'))
-    auchan_scraper: AuchanWineScraper = AuchanWineScraper(os.path.join(os.getcwd(), 'generated'))
+    output_dir = os.path.join(os.getcwd(), 'generated')
     
-    continente_scraper.run(product_limit)
-    auchan_scraper.run(product_limit)
+    scrapers = [
+        ContinenteWineScraper(output_dir),
+        AuchanWineScraper(output_dir)
+    ]
     
-    comparator: WinePriceComparator = WinePriceComparator(os.path.join(os.getcwd(), 'generated'))
-    results: List[Dict[str, Union[str, float]]] = comparator.compare_prices()
+    for scraper in scrapers:
+        scraper.run(product_limit)
     
-    print("\nWine Price Comparison Results:")
-    print("-" * 80)
-    
-    for result in results:
-        print(f"\nProduct: {result['name']}")
-        print(f"EAN: {result['ean']}")
-        print(f"Continente Price: €{result['continente_price']:.2f}")
-        print(f"Auchan Price: €{result['auchan_price']:.2f}")
-        
-        diff: float = result['price_difference']
-        if diff != 0:
-            cheaper: str = "Continente" if diff > 0 else "Auchan"
-            print(f"Price Difference: €{abs(diff):.2f} ({cheaper} is cheaper)")
-        else:
-            print(f"Price Difference: €{abs(diff):.2f} (Same price)")
-        print("-" * 80)
+    comparator = WinePriceComparator(*scrapers)
+    results = comparator.compare_prices()
+    comparator.print_comparison(results)
 
 if __name__ == "__main__":
     main()

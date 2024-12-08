@@ -37,6 +37,9 @@ class ContinenteWineScraper(BaseWineScraper):
         """Extract product information from a product element"""
         try:
             impression_data = product.get('data-product-tile-impression')
+            name = ""
+            brand = ""
+            price = 0.0
             
             if impression_data:
                 try:
@@ -45,7 +48,7 @@ class ContinenteWineScraper(BaseWineScraper):
                     name = product_info.get('name', '')
                     brand = product_info.get('brand', '')
                     price = float(product_info.get('price', 0))
-                except:
+                except json.JSONDecodeError:
                     # Fallback to HTML parsing if JSON fails
                     name = product.find('h2', class_='pwc-tile--description').text.strip()
                     brand = product.find('p', class_='pwc-tile--brand').text.strip()
@@ -63,6 +66,9 @@ class ContinenteWineScraper(BaseWineScraper):
                                 .replace('.', '')
                                 .replace('€', '')
                                 .replace(',', '.'))
+
+            if not all([name, brand, price, ean, quantity, price_per_litre]):
+                return None
 
             return {
                 'name': name,
@@ -98,19 +104,4 @@ class ContinenteWineScraper(BaseWineScraper):
         response: requests.Response = requests.get(url, headers=self.headers)
         soup: BeautifulSoup = BeautifulSoup(response.content, 'html.parser')
         grid_footer = soup.find('div', class_='col-12 grid-footer')
-        total_count: int = int(grid_footer.get('data-total-count'))
-        return (total_count + self.size - 1) // self.size
-
-    def _scrape_all_products(self, product_limit: int = 50) -> List[Dict[str, Any]]:
-        """Implementation of the abstract method from BaseWineScraper"""
-        all_products: List[Dict[str, Any]] = []
-        product_offset: int = 0
-        
-        while len(all_products) < product_limit:
-            products: List[Dict[str, Any]] = self.get_product_data(product_offset, product_limit - len(all_products))
-            if not products:
-                break
-            all_products.extend(products)
-            product_offset += self.size
-
-        return all_products
+        return int(grid_footer.get('data-total-count'))

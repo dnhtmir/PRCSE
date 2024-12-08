@@ -88,7 +88,17 @@ class BaseWineScraper:
     def _get_total_products(self) -> int:
         """To be implemented by child classes"""
         raise NotImplementedError
-    
-    def _scrape_all_products(self, product_limit: int) -> List[Dict[str, Any]]:
-        """To be implemented by child classes"""
-        raise NotImplementedError
+
+    def _scrape_all_products(self, product_limit: int = 50) -> List[Dict[str, Any]]:
+        """Implementation of the abstract method from BaseWineScraper"""
+        all_products: List[Dict[str, Any]] = []
+        product_offset: int = 0
+        
+        while len(all_products) < product_limit:
+            products: List[Dict[str, Any]] = self.get_product_data(product_offset, product_limit - len(all_products))
+            if not products:
+                break
+            all_products.extend(products)
+            product_offset += self.size
+
+        return all_products

@@ -164,7 +164,7 @@ class TestWineScraper(unittest.TestCase):
         self.assertEqual(products[0]["ean"], "1234567890123")
         self.assertAlmostEqual(products[0]["price_per_litre"], 13.32, places=2)
 
-    def test_price_comparator_with_price_per_litre(self):
+    def test_price_comparator(self):
         continente_data = copy.deepcopy(self.sample_data)
         auchan_data = copy.deepcopy(self.sample_data)
         auchan_data["1234567890123"]["price_history"][0]["price"] = 8.99
@@ -174,33 +174,50 @@ class TestWineScraper(unittest.TestCase):
             json.dump(continente_data, f)
         with open(os.path.join(self.test_dir, "auchan_wine_data.json"), "w") as f:
             json.dump(auchan_data, f)
+
+        scrapers = [
+            ContinenteWineScraper(self.test_dir),
+            AuchanWineScraper(self.test_dir)
+        ]
             
-        comparator = WinePriceComparator(self.test_dir)
+        comparator = WinePriceComparator(*scrapers)
         results = comparator.compare_prices()
         
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["price_difference"], 1.0)
-        self.assertEqual(results[0]["continente_price"], 9.99)
-        self.assertEqual(results[0]["auchan_price"], 8.99)
+        self.assertEqual(results[0]["price_differences"]["Continente"], 1.0)
+        self.assertEqual(results[0]["price_differences"]["Auchan"], 0.0)
+        self.assertEqual(results[0]["prices"]["Continente"], 9.99)
+        self.assertEqual(results[0]["prices"]["Auchan"], 8.99)
+        self.assertEqual(results[0]["cheapest_retailer"], "Auchan")
+        self.assertEqual(results[0]["retailers"], 2)
 
-    def test_price_history(self):
-        test_data = self.sample_data.copy()
-        test_data["1234567890123"]["price_history"].append({
+        continente_data["1234567890123"]["price_history"].append({
             "price": 10.99,
+            "price_per_litre": 14.65,
             "timestamp": "2024-03-21T10:00:00"
         })
-        test_data["1234567890123"]["price_per_litre"] = 14.65
+        
+        auchan_data["1234567890123"]["price_history"].append({
+            "price": 9.99,
+            "price_per_litre": 13.32,
+            "timestamp": "2024-03-21T10:00:00"
+        })
         
         with open(os.path.join(self.test_dir, "continente_wine_data.json"), "w") as f:
-            json.dump(test_data, f)
+            json.dump(continente_data, f)
+        with open(os.path.join(self.test_dir, "auchan_wine_data.json"), "w") as f:
+            json.dump(auchan_data, f)
             
-        comparator = WinePriceComparator(self.test_dir)
+        comparator = WinePriceComparator(*scrapers)
         history = comparator.get_price_history("1234567890123")
         
-        self.assertEqual(len(history["continente"]), 2)
-        self.assertEqual(history["continente"][-1]["price"], 10.99)
-        self.assertAlmostEqual(test_data["1234567890123"]["price_per_litre"], 14.65, places=2)
-
+        self.assertEqual(len(history["Continente"]), 2)
+        self.assertEqual(len(history["Auchan"]), 2)
+        self.assertEqual(history["Continente"][-1]["price"], 10.99)
+        self.assertEqual(history["Auchan"][-1]["price"], 9.99)
+        self.assertAlmostEqual(history["Continente"][-1]["price_per_litre"], 14.65, places=2)
+        self.assertAlmostEqual(history["Auchan"][-1]["price_per_litre"], 13.32, places=2)
+        
     @patch('requests.get')
     def test_run_method_and_file_output(self, mock_get):
         """Test the complete run method and verify output files"""

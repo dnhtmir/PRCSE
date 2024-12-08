@@ -77,20 +77,4 @@ class AuchanWineScraper(BaseWineScraper):
         response = requests.get(url, headers=self.headers)
         soup = BeautifulSoup(response.content, 'html.parser')
         input_element = soup.find('input', {'name': 'auc-js-search-results-total'})
-        total_count = int(input_element.get('value'))
-        return (total_count + self.size - 1) // self.size
-
-    def _scrape_all_products(self, product_limit: int) -> List[Dict[str, Any]]:
-        """Implementation of the abstract method from BaseWineScraper"""
-        all_products: List[Dict[str, Any]] = []
-        product_offset: int = 0
-        
-        while len(all_products) < product_limit:
-            products: List[Dict[str, Any]] = self.get_product_data(product_offset, product_limit - len(all_products))
-            if not products:
-                break
-            all_products.extend(products)
-            product_offset += self.size
-            
-        return all_products
-
+        return int(input_element.get('value'))
