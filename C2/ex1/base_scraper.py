@@ -73,7 +73,7 @@ class BaseWineScraper:
         except Exception as e:
             print(f"Error during scraping: {e}")
 
-    def get_product_data(self, product_offset: int = 0, product_limit: int = 50) -> List[Dict[str, Any]]:
+    def get_product_data(self, product_offset: int = 0, product_limit: int = -1) -> List[Dict[str, Any]]:
         """To be implemented by child classes"""
         raise NotImplementedError
     
@@ -89,10 +89,13 @@ class BaseWineScraper:
         """To be implemented by child classes"""
         raise NotImplementedError
 
-    def _scrape_all_products(self, product_limit: int = 50) -> List[Dict[str, Any]]:
+    def _scrape_all_products(self, product_limit: int = -1) -> List[Dict[str, Any]]:
         """Implementation of the abstract method from BaseWineScraper"""
         all_products: List[Dict[str, Any]] = []
         product_offset: int = 0
+
+        if product_limit == -1:
+            product_limit = self._get_total_products()
         
         while len(all_products) < product_limit:
             products: List[Dict[str, Any]] = self.get_product_data(product_offset, product_limit - len(all_products))

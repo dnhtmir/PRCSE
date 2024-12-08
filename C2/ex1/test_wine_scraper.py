@@ -30,7 +30,7 @@ class TestWineScraper(unittest.TestCase):
             "name": "Test Wine",
             "price": 9.99,
             "brand": "Test Brand",
-            "quantity": "750ml",
+            "quantity": "garrafa 75cl",
             "price_per_litre": 13.32,
             "ean": "1234567890123"
         }
@@ -217,7 +217,7 @@ class TestWineScraper(unittest.TestCase):
         self.assertEqual(history["Auchan"][-1]["price"], 9.99)
         self.assertAlmostEqual(history["Continente"][-1]["price_per_litre"], 14.65, places=2)
         self.assertAlmostEqual(history["Auchan"][-1]["price_per_litre"], 13.32, places=2)
-        
+
     @patch('requests.get')
     def test_run_method_and_file_output(self, mock_get):
         """Test the complete run method and verify output files"""

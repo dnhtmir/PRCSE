@@ -6,22 +6,30 @@ import sys
 import os
 
 def main() -> None:
-    if len(sys.argv) not in [1, 2]:
-        print(f"Usage: python {sys.argv[0]} [product_limit]")
-        print("product_limit: Optional integer for number of products to scrape (default: 50)")
+    if len(sys.argv) not in [2, 3]:
+        print(f"Usage: python {sys.argv[0]} output_path [product_limit]")
+        print("output_path: Directory path for storing scraped data")
+        print("product_limit: Optional integer for number of products to scrape (default: gets every product available in the website)")
         sys.exit(1)
         
-    product_limit: int = int(sys.argv[1]) if len(sys.argv) == 2 else 50
-    output_dir = os.path.join(os.getcwd(), 'generated')
+    output_path = sys.argv[1]
+    product_limit: int = int(sys.argv[2]) if len(sys.argv) == 3 else -1
     
+    # Create output directory if it doesn't exist
+    os.makedirs(output_path, exist_ok=True)
+    
+    # Initialize scrapers with provided output path
     scrapers = [
-        ContinenteWineScraper(output_dir),
-        AuchanWineScraper(output_dir)
+        ContinenteWineScraper(output_path),
+        AuchanWineScraper(output_path)
+        # Add more scrapers here as needed
     ]
     
+    # Run all scrapers
     for scraper in scrapers:
         scraper.run(product_limit)
     
+    # Compare prices across all scrapers
     comparator = WinePriceComparator(*scrapers)
     results = comparator.compare_prices()
     comparator.print_comparison(results)

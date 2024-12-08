@@ -7,6 +7,7 @@
             "request": "launch",
             "program": "ex1.py",
             "args": [
+                "${workspaceFolder}/C2/ex1/generated",
                 "40"
             ],
             "cwd": "${workspaceFolder}/C2/ex1",

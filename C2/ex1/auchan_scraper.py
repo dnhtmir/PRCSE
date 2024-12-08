@@ -14,7 +14,7 @@ class AuchanWineScraper(BaseWineScraper):
             size=24
         )
 
-    def get_product_data(self, product_offset=0, product_limit: int = 50) -> List[Dict[str, Any]]:
+    def get_product_data(self, product_offset=0, product_limit: int = -1) -> List[Dict[str, Any]]:
         """Get products from a specific page"""
         url: str = f"{self.base_url}?sz={self.size}&start={product_offset}"
         response: requests.Response = requests.get(url, headers=self.headers)
