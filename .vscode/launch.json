@@ -15,7 +15,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Exercise 3",
+            "name": "Python: Steganography",
             "type": "debugpy",
             "request": "launch",
             "program": "ex3.py",
