@@ -24,21 +24,28 @@ import os
 from stegano import lsb  # LSB (Least Significant Bit) steganography for hiding/revealing messages
 from pycipher import Caesar  # Caesar cipher for encryption and decryption using ROT13
 
-image_path = "images\PRCSE-C2.png"
+def extract_hidden_message (image_path) :
+    # Check if the file exists
+    if os.path.exists(image_path):
 
-# Check if the file exists
-if os.path.exists(image_path):
+        # Reveal the hidden message from an image using LSB steganography
+        hidden_message = lsb.reveal(image_path)
 
-    # Reveal the hidden message from an image using LSB steganography
-    hidden_message = lsb.reveal(image_path)
-    print(f"Encrypted message: {hidden_message}")  # Display the encrypted (hidden) message
+        if hidden_message:
+            # Decrypt the hidden message using the Caesar cipher with ROT13 (shift key = 13)
+            decrypted_message = Caesar(key=13).decipher(hidden_message)
+            return f" - Encripted message: ${hidden_message}\n - Decripted message : ${decrypted_message}"  # Return the decrypted message
+        else:
+            return "No hidden message found."  # Return message if no hidden message is found
 
-    # Decrypt the hidden message using the Caesar cipher with ROT13 (shift key = 13)
-    decrypted_message = Caesar(key=13).decipher(hidden_message)
-    print(f"Decrypted message: {decrypted_message}")  # Display the decrypted message
+    else:
+        return f"The image '{image_path}' does not exist."  # Return error message if image is not found
 
-else:
-    print(f"The image '{image_path}' does not exist.")
-
-
-
+# If running the script sirectly
+if __name__ == "__main__":
+    image_path = "images/PRCSE-C2.png"
+    
+    # Function call to display the message on the console
+    result = extract_hidden_message(image_path)
+    
+    print(result)
