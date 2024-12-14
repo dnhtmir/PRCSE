@@ -1,12 +1,13 @@
-from typing import List, Dict, Union
-from continente_scraper import ContinenteWineScraper
-from auchan_scraper import AuchanWineScraper
-from wine_price_comparator import WinePriceComparator
-from base_scraper import BaseWineScraper
-import sys
-import os
+from typing import List  # For type hinting lists
+from continente_scraper import ContinenteWineScraper  # Scraper for Continente website
+from auchan_scraper import AuchanWineScraper  # Scraper for Auchan website
+from wine_price_comparator import WinePriceComparator  # Compares wine prices across scrapers
+from base_scraper import BaseWineScraper  # Base class for wine scrapers
+import sys  # For system-related functions
+import os  # For interacting with the operating system
 
 def main() -> None:
+    # Checking if the number of arguments is not 2 or 3
     if len(sys.argv) not in [2, 3]:
         print(f"Usage: python {sys.argv[0]} output_path [product_limit]")
         print("output_path: Directory path for storing scraped data")

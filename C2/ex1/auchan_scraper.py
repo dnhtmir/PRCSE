@@ -1,10 +1,15 @@
+# This line imports List, Dict, Any, and Optional types from the typing module
+# List - Used for type hinting lists
+# Dict - Used for type hinting dictionaries 
+# Any - Used when the type is dynamic or unknown
+# Optional - Used for values that could be None
 from typing import List, Dict, Any, Optional
-import requests
-from bs4 import BeautifulSoup
-import json
-import os
-from datetime import datetime
-from base_scraper import BaseWineScraper
+import requests # HTTP library for making web requests
+from bs4 import BeautifulSoup # Library for parsing HTML and XML documents
+import json # Built-in module for JSON data encoding and decoding
+import os # Provides functions for interacting with the operating system (file paths, etc.)
+from datetime import datetime # Provides classes for working with dates and times
+from base_scraper import BaseWineScraper # Custom module containing the base class for wine scrapers
 
 class AuchanWineScraper(BaseWineScraper):
     def __init__(self, folder: str) -> None:
@@ -14,7 +19,7 @@ class AuchanWineScraper(BaseWineScraper):
             size=24
         )
 
-    def get_product_data(self, product_offset=0, product_limit: int = -1) -> List[Dict[str, Any]]:
+    def _get_product_data(self, product_offset=0, product_limit: int = -1) -> List[Dict[str, Any]]:
         """Get products from a specific page"""
         url: str = f"{self.base_url}?sz={self.size}&start={product_offset}"
         response: requests.Response = requests.get(url, headers=self.headers)
@@ -22,7 +27,7 @@ class AuchanWineScraper(BaseWineScraper):
         
         products: List[Dict[str, Any]] = []
         for product in soup.find_all("div", class_="product-tile"):
-            product_data: Optional[Dict[str, Any]] = self.scrape_product(product)
+            product_data: Optional[Dict[str, Any]] = self._scrape_product(product)
             if product_data:
                 products.append(product_data)
             if len(products) >= product_limit:
@@ -30,7 +35,7 @@ class AuchanWineScraper(BaseWineScraper):
 
         return products
 
-    def scrape_product(self, product: BeautifulSoup) -> Optional[Dict[str, Any]]:
+    def _scrape_product(self, product: BeautifulSoup) -> Optional[Dict[str, Any]]:
         """Extract product information from a product element"""
         try:
             impression_data: Optional[str] = product.get('data-gtm-new')

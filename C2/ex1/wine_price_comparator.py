@@ -1,8 +1,11 @@
-from typing import List, Dict, Union, Any, Optional
-from base_scraper import BaseWineScraper
-import json
-import os
-from datetime import datetime
+# This line imports types from the typing module for type hinting:
+# - List: For annotating lists (e.g., List[str] is a list of strings)
+# - Dict: For annotating dictionaries (e.g., Dict[str, int] is a dict with string keys and integer values)
+# - Union: For types that could be one of several types (e.g., Union[str, int] means str or int)
+# - Any: Used when a value could be of any type
+from typing import List, Dict, Union, Any
+from base_scraper import BaseWineScraper  # Custom module containing the base class for wine scrapers
+import json  # Built-in module for JSON data encoding and decoding
 
 class WinePriceComparator:
     def __init__(self, *scrapers: BaseWineScraper) -> None:

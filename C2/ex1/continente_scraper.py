@@ -1,23 +1,27 @@
+# This line imports List, Dict, Any, and Optional types from the typing module
+# These are used for type hinting in Python to make the code more maintainable:
+# - List: For annotating lists (e.g., List[str] is a list of strings)
+# - Dict: For annotating dictionaries (e.g., Dict[str, int] is a dict with string keys and integer values) 
+# - Any: Used when a value could be of any type
+# - Optional: Used for values that could be None (e.g., Optional[str] means str | None)
 from typing import List, Dict, Any, Optional
-import requests
-from bs4 import BeautifulSoup
-import json
-import os
-from datetime import datetime
-import time
-import os
-from urllib.parse import urlparse, parse_qs
-from base_scraper import BaseWineScraper
+import requests  # HTTP library for making web requests
+from bs4 import BeautifulSoup  # Library for parsing HTML and XML documents
+import json  # Built-in module for JSON data encoding and decoding
+from datetime import datetime  # Provides classes for working with dates and times
+import os  # Provides functions for interacting with the operating system (file paths, etc.)
+from urllib.parse import urlparse, parse_qs  # Parses URLs into components
+from base_scraper import BaseWineScraper  # Custom module containing the base class for wine scrapers
 
 class ContinenteWineScraper(BaseWineScraper):
     def __init__(self, folder: str) -> None:
         super().__init__(
             base_url='https://www.continente.pt/bebidas-e-garrafeira/vinhos/',
             data_file=os.path.join(folder, "continente_wine_data.json"),
-            size=36 # TODO: pode-se retirar
+            size=36
         )
 
-    def get_product_data(self, product_offset: int = 0, product_limit: int = -1) -> List[Dict[str, Any]]:
+    def _get_product_data(self, product_offset: int = 0, product_limit: int = -1) -> List[Dict[str, Any]]:
         """Get products from a specific page"""
         url: str = f'{self.base_url}?start={product_offset}&srule=FOOD-Bebidas&pmin=0.01'
         response: requests.Response = requests.get(url, headers=self.headers)
@@ -25,7 +29,7 @@ class ContinenteWineScraper(BaseWineScraper):
         
         products: List[Dict[str, Any]] = []
         for product in soup.find_all("div", class_="product-tile"):
-            product_data: Optional[Dict[str, Any]] = self.scrape_product(product)
+            product_data: Optional[Dict[str, Any]] = self._scrape_product(product)
             if product_data:
                 products.append(product_data)
             if len(products) >= product_limit:
@@ -33,7 +37,7 @@ class ContinenteWineScraper(BaseWineScraper):
             
         return products
 
-    def scrape_product(self, product: BeautifulSoup) -> Optional[Dict[str, Any]]:
+    def _scrape_product(self, product: BeautifulSoup) -> Optional[Dict[str, Any]]:
         """Extract product information from a product element"""
         try:
             impression_data = product.get('data-product-tile-impression')
