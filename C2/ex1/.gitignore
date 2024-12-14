@@ -2,3 +2,10 @@ __pycache__/
 __pycache__/**
 generated/
 generated/**
+
+# Virtual environment
+venv/
+ENV/
+env/
+venv.bak/
+env.bak/
