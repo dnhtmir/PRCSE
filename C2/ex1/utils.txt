@@ -1,8 +1,8 @@
 #create env
-py -m venv venv
+py -m venv .venv
 
 #activate 
-venv\Scripts\activate
+source .venv\Scripts\activate
 
 #save requirements
 pip freeze > requirements.txt
