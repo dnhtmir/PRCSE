@@ -14,7 +14,7 @@ class ContinenteWineScraper(BaseWineScraper):
         super().__init__(
             base_url='https://www.continente.pt/bebidas-e-garrafeira/vinhos/',
             data_file=os.path.join(folder, "continente_wine_data.json"),
-            size=36
+            size=36 # TODO: pode-se retirar
         )
 
     def get_product_data(self, product_offset: int = 0, product_limit: int = -1) -> List[Dict[str, Any]]:

@@ -1,2 +1,5 @@
 .venv
 .venv/**
+# malware
+C2/ex2/
+C2/ex2/**

@@ -2,6 +2,7 @@ from typing import List, Dict, Union
 from continente_scraper import ContinenteWineScraper
 from auchan_scraper import AuchanWineScraper
 from wine_price_comparator import WinePriceComparator
+from base_scraper import BaseWineScraper
 import sys
 import os
 
@@ -19,7 +20,7 @@ def main() -> None:
     os.makedirs(output_path, exist_ok=True)
     
     # Initialize scrapers with provided output path
-    scrapers = [
+    scrapers: List[BaseWineScraper] = [
         ContinenteWineScraper(output_path),
         AuchanWineScraper(output_path)
         # Add more scrapers here as needed
