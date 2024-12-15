@@ -35,6 +35,19 @@
             "cwd": "${workspaceFolder}/C2/ex1",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Python: Run Ex3 Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "-m",
+            "args": [
+                "unittest",
+                "ex3_tests.py"
+            ],
+            "cwd": "${workspaceFolder}/C2/ex3",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
