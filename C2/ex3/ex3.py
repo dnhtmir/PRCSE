@@ -34,7 +34,7 @@ def extract_hidden_message (image_path) :
         if hidden_message:
             # Decrypt the hidden message using the Caesar cipher with ROT13 (shift key = 13)
             decrypted_message = Caesar(key=13).decipher(hidden_message)
-            reencrypt_message = Caesar(key=13).encipher(decrypted_message)
+            reencrypt_message = Caesar(key=13).encipher(hidden_message)
             return f" - Encripted message: {hidden_message}\n - Decripted message : {decrypted_message}\n - Re-encrypt (apply ROT13 again): {reencrypt_message} "  # Return the decrypted message
         else:
             return "No hidden message found."  # Return message if no hidden message is found
