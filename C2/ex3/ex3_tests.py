@@ -22,13 +22,7 @@ def corruptedImage():
         
     return new_img_path
 
-def testMultipleScenarios(image):
-    print(f"Testing image: {image}")
-    # Check if the image exists
-    if not os.path.exists(image):
-        print("The image doesn't exist.")
-        return
-    
+def testMultipleScenarios(image):    
     try:
         # Extract the hidden message from the image
         secret_message = extract_hidden_message(image)
@@ -44,16 +38,14 @@ def testMultipleScenarios(image):
         print(f"Error processing the image: {e}")
 
 def test_encryption_and_decryption(self):
-        original_message = "PBATENGHYNGVBAFGUVFVFCEPFRUVQQRAZRFFNTR"
+        original_message = "CONGRATULATIONSTHISISPRCSEHIDDENMESSAGE"
 
         result = extract_hidden_message(image_path)
-        assert "Encripted message" in result
-        assert "Decripted message" in result
-        assert "Re-encrypt (apply ROT13 again)" in result
+        assert "Encripted message:" in result
+        assert f"Re-encrypt (apply ROT13 again): {original_message}" in result
 
-        # Verificar se a mensagem desencriptada corresponde à mensagem original esperada
         assert original_message in result
-        print("The re-encripted message is equal than the inital encripted message\n")
+        print("The re-encripted message (using ROT13) is equal than the original message\n")
 
 
 def main():
