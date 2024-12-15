@@ -1,3 +1,4 @@
+import unittest
 from ex3 import extract_hidden_message  # Importing the function from ex3.py
 import os
 
@@ -42,6 +43,19 @@ def testMultipleScenarios(image):
         # Catch all exceptions and print the error
         print(f"Error processing the image: {e}")
 
+def test_encryption_and_decryption(self):
+        original_message = "PBATENGHYNGVBAFGUVFVFCEPFRUVQQRAZRFFNTR"
+
+        result = extract_hidden_message(image_path)
+        assert "Encripted message" in result
+        assert "Decripted message" in result
+        assert "Re-encrypt (apply ROT13 again)" in result
+
+        # Verificar se a mensagem desencriptada corresponde à mensagem original esperada
+        assert original_message in result
+        print("The re-encripted message is equal than the inital encripted message\n")
+
+
 def main():
     print('------- TEST 1 : Success test (Valid Image) ---------')
     # Test with the original image that has the hidden message
@@ -59,6 +73,10 @@ def main():
     print('\n\n------- TEST 4 : Image with no hidden message ---------')
     # Test with an image that has no hidden message (could be a valid image with no hidden content)
     testMultipleScenarios(image_without_msg)  # Example: if no message is hidden, this will print "No hidden message found."
+
+
+    print('\n\n------- TEST 5 : Check if the re-encrypted message is same than original message ---------')
+    test_encryption_and_decryption(new_img_path)
 
 if __name__ == "__main__":
     main()
